@@ -1,0 +1,108 @@
+# ============================================================
+# Scalable Data Engineering with Azure — Configuration
+# ============================================================
+
+azure:
+  tenant_id: "${AZURE_TENANT_ID}"
+  subscription_id: "${AZURE_SUBSCRIPTION_ID}"
+  resource_group: "rg-data-engineering-prod"
+  location: "eastus2"
+
+  # Azure Data Lake Storage Gen2
+  adls:
+    account_name: "${ADLS_ACCOUNT_NAME}"
+    account_key: "${ADLS_ACCOUNT_KEY}"          # or use managed identity
+    containers:
+      bronze: "bronze"
+      silver: "silver"
+      gold: "gold"
+      archive: "archive"
+    base_path: "data"
+
+  # Azure Event Hubs
+  event_hubs:
+    namespace: "${EVENT_HUB_NAMESPACE}"
+    connection_string: "${EVENT_HUB_CONNECTION_STRING}"
+    hubs:
+      transactions: "eh-transactions"
+      clickstream: "eh-clickstream"
+      iot_telemetry: "eh-iot-telemetry"
+    consumer_group: "$Default"
+    checkpoint_store_connection: "${CHECKPOINT_STORE_CONN}"
+    checkpoint_container: "eh-checkpoints"
+
+  # Azure Key Vault
+  key_vault:
+    url: "https://${KEY_VAULT_NAME}.vault.azure.net/"
+
+  # Azure Databricks
+  databricks:
+    host: "https://${DATABRICKS_HOST}.azuredatabricks.net"
+    token: "${DATABRICKS_TOKEN}"
+    cluster_id: "${DATABRICKS_CLUSTER_ID}"
+    jobs:
+      bronze_to_silver: 1001
+      silver_to_gold: 1002
+      ml_feature_engineering: 1003
+
+  # Azure Synapse Analytics
+  synapse:
+    workspace_name: "${SYNAPSE_WORKSPACE}"
+    sql_endpoint: "${SYNAPSE_SQL_ENDPOINT}"
+    database: "DataWarehouse"
+    schemas:
+      staging: "stg"
+      warehouse: "dw"
+      marts: "mart"
+
+  # Azure Monitor
+  monitor:
+    log_analytics_workspace_id: "${LOG_ANALYTICS_WORKSPACE_ID}"
+    application_insights_key: "${APP_INSIGHTS_KEY}"
+    alert_email: "data-alerts@yourorg.com"
+
+# Processing Settings
+processing:
+  spark:
+    app_name: "AzureDataEngineering"
+    executor_memory: "8g"
+    executor_cores: 4
+    num_executors: 10
+    shuffle_partitions: 200
+    adaptive_enabled: true
+  
+  delta:
+    vacuum_retain_hours: 168      # 7 days
+    optimize_file_size_mb: 128
+    z_order_columns: ["date", "customer_id"]
+  
+  batch:
+    max_retries: 3
+    retry_delay_seconds: 30
+    batch_size: 10000
+    parallelism: 8
+
+# Data Quality
+data_quality:
+  enabled: true
+  fail_on_error: false            # warn vs. fail
+  checks:
+    null_threshold: 0.05          # 5% null allowed
+    duplicate_threshold: 0.01     # 1% duplicates allowed
+    freshness_hours: 24
+
+# Orchestration (Airflow)
+airflow:
+  dag_owner: "data-engineering-team"
+  default_retries: 2
+  retry_delay_minutes: 5
+  email_on_failure: true
+  email_on_retry: false
+  concurrency: 16
+
+# Logging
+logging:
+  level: "INFO"
+  format: "json"
+  output: "stdout"
+  include_trace_id: true

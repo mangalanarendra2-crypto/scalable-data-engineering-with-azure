@@ -1,0 +1,50 @@
+# Core Azure SDKs
+azure-storage-file-datalake==12.14.0
+azure-eventhub==5.11.4
+azure-keyvault-secrets==4.7.0
+azure-identity==1.15.0
+azure-monitor-opentelemetry==1.2.0
+azure-mgmt-datafactory==4.0.0
+azure-synapse-analytics==0.1.0
+
+# Data Processing
+pyspark==3.5.0
+delta-spark==3.0.0
+pandas==2.1.4
+pyarrow==14.0.1
+dbt-synapse==1.7.0
+
+# Orchestration
+apache-airflow==2.8.1
+apache-airflow-providers-microsoft-azure==8.3.0
+
+# Streaming
+confluent-kafka==2.3.0
+avro-python3==1.10.2
+fastavro==1.9.2
+
+# Utilities
+pydantic==2.5.3
+pydantic-settings==2.1.0
+structlog==23.3.0
+tenacity==8.2.3
+python-dotenv==1.0.0
+cryptography==41.0.7
+requests==2.31.0
+httpx==0.26.0
+PyYAML==6.0.1
+click==8.1.7
+rich==13.7.0
+
+# Testing
+pytest==7.4.4
+pytest-asyncio==0.23.3
+pytest-mock==3.12.0
+pytest-cov==4.1.0
+moto==4.2.14
+freezegun==1.4.0
+
+# Type checking & linting
+mypy==1.8.0
+ruff==0.1.14
+black==23.12.1
